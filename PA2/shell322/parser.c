@@ -2,7 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* fills an args array by tokenizing the given string by spaces */
+/*
+ * Splits a command line into tokens by single spaces.
+ * The resulting array is NULL-terminated for execvp compatibility.
+ */
 static void tokenize(char *str, char **args) {
     char *token = strtok(str, " ");
     int i = 0;
@@ -13,7 +16,10 @@ static void tokenize(char *str, char **args) {
     args[i] = NULL; /* null-terminate the array */
 }
 
-/* trims leading and trailing spaces in place */
+/*
+ * Removes leading and trailing spaces in place.
+ * This keeps parsing stable when users type extra spaces.
+ */
 static void trim_spaces(char *str) {
     size_t start = 0;
     size_t len = strlen(str);
@@ -33,9 +39,17 @@ static void trim_spaces(char *str) {
     str[end - start] = '\0';
 }
 
+/*
+ * Parses a raw input line into one of these cases:
+ *  - CMD_AND: left && right
+ *  - CMD_PIPE: left | right
+ *  - CMD_BACKGROUND: command &
+ *  - CMD_BUILTIN / CMD_SYSTEM: normal commands
+ * Assumes at most one special operator in the line as per assignment.
+ */
 ParsedCommand parse(char *input) {
     ParsedCommand cmd;
-    /* initialize everything to NULL/0 */
+    /* initialize all fields so the caller can safely use them */
     cmd.type = CMD_SYSTEM;
     for (int i = 0; i < MAX_ARGS; i++) {
         cmd.args[i] = NULL;
@@ -44,17 +58,17 @@ ParsedCommand parse(char *input) {
     }
     cmd.background = 0;
 
-    /* remove trailing newline if present */
+    /* remove trailing newline so matching and execvp work cleanly */
     size_t len = strlen(input);
     if (len > 0 && input[len - 1] == '\n') {
         input[len - 1] = '\0';
     }
     trim_spaces(input);
 
-    /* 1. check for && first */
+    /* 1. check for && first to avoid matching single & */
     char *and_pos = strstr(input, "&&");
     if (and_pos != NULL) {
-        /* split into left and right, tokenize each */
+        /* split into left and right, then tokenize each side */
         *and_pos = '\0';
         char *right = and_pos + 2;
         trim_spaces(input);
@@ -65,7 +79,7 @@ ParsedCommand parse(char *input) {
         return cmd;
     }
 
-    /* 2. check for | */
+    /* 2. check for | (single pipe only) */
     char *pipe_pos = strchr(input, '|');
     if (pipe_pos != NULL) {
         *pipe_pos = '\0';
@@ -78,7 +92,7 @@ ParsedCommand parse(char *input) {
         return cmd;
     }
 
-    /* 3. check for & */
+    /* 3. check for & only at the end (background) */
     len = strlen(input);
     if (len > 0 && input[len - 1] == '&') {
         input[len - 1] = '\0';
@@ -89,7 +103,7 @@ ParsedCommand parse(char *input) {
         return cmd;
     }
 
-    /* 4. normal command - check if builtin or system */
+    /* 4. normal command - detect builtin vs system */
     tokenize(input, cmd.args);
     if (cmd.args[0] != NULL) {
         if (strcmp(cmd.args[0], "cd") == 0 ||

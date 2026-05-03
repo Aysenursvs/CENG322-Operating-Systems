@@ -4,7 +4,10 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-/* executes a simple foreground or background system command */
+/*
+ * Executes a single system command using fork/exec.
+ * If background is non-zero, do not wait and print child pid.
+ */
 void exec_simple(char **args, int background) {
     /* fork a child process */
     /* child: call execvp */
@@ -16,19 +19,25 @@ void exec_simple(char **args, int background) {
     }
 
     if (pid == 0) {
+        /* child: replace image with the requested program */
         execvp(args[0], args);
         perror("execvp");
         exit(1);
     }
 
     if (background) {
+        /* background: do not block the shell */
         printf("%d\n", pid);
     } else {
+        /* foreground: wait for completion */
         waitpid(pid, NULL, 0);
     }
 }
 
-/* executes two commands connected with a pipe | */
+/*
+ * Executes two commands connected with a single pipe.
+ * Left command writes to pipe, right command reads from pipe.
+ */
 void exec_pipe(char **left_args, char **right_args) {
     /* create a pipe with pipe() */
     /* fork first child for left command */
@@ -42,6 +51,7 @@ void exec_pipe(char **left_args, char **right_args) {
     /* parent: close both pipe ends */
     /* parent: wait for both children */
 
+    /* basic validation so execvp does not get NULL */
     if (left_args[0] == NULL || right_args[0] == NULL) {
         fprintf(stderr, "shell322: invalid pipe command\n");
         return;
@@ -61,6 +71,7 @@ void exec_pipe(char **left_args, char **right_args) {
     }
 
     if (left_pid == 0) {
+        /* left child: stdout -> pipe write end */
         dup2(fds[1], STDOUT_FILENO);
         close(fds[0]);
         close(fds[1]);
@@ -79,6 +90,7 @@ void exec_pipe(char **left_args, char **right_args) {
     }
 
     if (right_pid == 0) {
+        /* right child: stdin <- pipe read end */
         dup2(fds[0], STDIN_FILENO);
         close(fds[0]);
         close(fds[1]);
@@ -87,13 +99,16 @@ void exec_pipe(char **left_args, char **right_args) {
         exit(1);
     }
 
+    /* parent: close pipe ends and wait for both */
     close(fds[0]);
     close(fds[1]);
     waitpid(left_pid, NULL, 0);
     waitpid(right_pid, NULL, 0);
 }
 
-/* executes second command only if first exits with status 0 */
+/*
+ * Executes the second command only if the first exits with status 0.
+ */
 void exec_and(char **first_args, char **second_args) {
     /* fork and execute first command */
     /* wait and get exit status */
@@ -105,6 +120,7 @@ void exec_and(char **first_args, char **second_args) {
     }
 
     if (pid == 0) {
+        /* child: run first command */
         execvp(first_args[0], first_args);
         perror("execvp");
         exit(1);
@@ -117,6 +133,7 @@ void exec_and(char **first_args, char **second_args) {
     }
 
     if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
+        /* run second only if first succeeded */
         pid_t pid2 = fork();
         if (pid2 < 0) {
             perror("fork");

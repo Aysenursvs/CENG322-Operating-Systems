@@ -5,6 +5,7 @@
 #include "executor.h"
 #include "history.h"
 
+/* returns 1 if the line contains only whitespace/newline */
 static int is_blank_line(const char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] != ' ' && str[i] != '\n' && str[i] != '\t') {
@@ -26,35 +27,37 @@ int main() {
         printf("shell322> ");
         fflush(stdout);
 
-        /* read input */
+        /* read input (fgets keeps the trailing newline if any) */
         if (fgets(input, MAX_CMD_LEN, stdin) == NULL) {
             break;
         }
 
-        /* skip empty input */
+        /* skip empty or whitespace-only input */
         if (is_blank_line(input)) {
             continue;
         }
 
+        /* keep an unmodified copy for history before parsing */
         strncpy(raw, input, MAX_CMD_LEN - 1);
         raw[MAX_CMD_LEN - 1] = '\0';
 
         
 
-        /* strip trailing newline for history */
+        /* strip trailing newline for history output formatting */
         size_t raw_len = strlen(raw);
         if (raw_len > 0 && raw[raw_len - 1] == '\n') {
             raw[raw_len - 1] = '\0';
         }
 
-        /* parse the input */
+        /* parse the input into command type and args */
         ParsedCommand cmd = parse(input);
 
+        /* ignore parse results that have no command */
         if (cmd.type == CMD_SYSTEM && cmd.args[0] == NULL) {
             continue;
         }
 
-        /* add to history (except history command, it handles itself) */
+                /* add to history (except history command, it handles itself) */
         if (!(cmd.type == CMD_BUILTIN && cmd.args[0] != NULL &&
               strcmp(cmd.args[0], "history") == 0)) {
             history_add(raw);
