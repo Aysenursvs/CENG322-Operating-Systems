@@ -5,6 +5,7 @@
 *.rar
 *.7z
 *.exe
+shell322
 
 # Ignore all of PA1 except backup
 PA1/*
