@@ -1,0 +1,13 @@
+# Ignore PDF files
+*.pdf
+*.tar.gz
+*.zip
+*.rar
+*.7z
+*.exe
+
+# Ignore all of PA1 except backup
+PA1/*
+!PA1/backup
+!PA1/backup/**
+/home/aysenur/322_labs/CENG322_Assignments/PA1/backup_2026-03-19_13-33-01

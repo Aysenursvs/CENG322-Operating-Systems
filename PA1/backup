@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# 300201051
+# Ayşenur Sivaslıgil
+
+# ===== STAGE 1: Input Validation =====
+source_dir="$1"
+backup_dir="$2"
+# Check argument count
+if [ $# -ne 2 ]; then
+    echo "Missing arguments. Usage: $0 <source_dir> <backup_dir>"
+    exit 1
+fi
+
+# Check source dir exists
+if [ ! -e "$source_dir" ]; then
+    echo "Source directory does not exist: $source_dir"
+    exit 1
+fi
+# Check source dir is a directory
+if [ ! -d "$source_dir" ]; then
+    echo "Source directory is not a directory: $source_dir"
+    exit 1
+fi
+# Create backup dir if missing
+if [ ! -d "$backup_dir" ]; then
+    echo "Backup directory does not exist. Creating: $backup_dir"
+    mkdir -p "$backup_dir"
+fi
+
+# ===== STAGE 2: Timestamp Generation =====
+
+# Generate timestamp
+timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+
+# Generate names
+backup_dir_name="backup_${timestamp}"
+archive_file_name="backup_${timestamp}.tar.gz"
+analysis_report_file_name="analysis_${timestamp}.txt"
+
+# ===== STAGE 3: Directory Analysis =====
+
+#Global variables for analysis
+total_files=0
+total_dirs=0
+total_size=0
+
+analysis_funct(){
+    local dir="$1"
+
+    for item in "$dir"/*; do
+        if [ ! -e "$item" ]; then
+            echo "Error: $item does not exist."
+            continue
+        fi
+
+        if [ -f "$item" ]; then
+            byte=$(stat -c %s "$item")
+            ((total_files++))
+            ((total_size=(total_size) + byte))
+        fi
+
+        if [ -d "$item" ]; then
+            ((total_dirs++))
+            analysis_funct "$item"
+        fi
+
+    done
+}
+
+analysis_funct "$source_dir"
+
+#Save analysis report to file
+basename=$(basename "$source_dir")
+{
+    echo "Backup Analysis Report"
+    echo "-----------------------"
+    echo "Timestamp: $timestamp"
+    echo "Source Directory: $basename"
+    echo "Total Files: $total_files"
+    echo "Total Directories: $total_dirs"
+    echo "Total Size (bytes): $total_size bytes"
+} > "$backup_dir/$analysis_report_file_name"
+
+# ===== STAGE 4: Backup and Compression =====
+
+temp_backup_dir="$backup_dir/$backup_dir_name"  # temporary backup directory
+final_archive_dir="$backup_dir/$archive_file_name"  # final archive
+
+mkdir -p "$temp_backup_dir"
+
+cp -r "$source_dir" "$temp_backup_dir"
+
+cd "$backup_dir" || { echo "Failed to change directory"; exit 1; }
+tar -czf "$archive_file_name" "$backup_dir_name"
+
+rm -rf "$temp_backup_dir"
