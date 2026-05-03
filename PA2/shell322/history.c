@@ -35,6 +35,7 @@ void history_add(char *cmd) {
 void history_print() {
 
     /* print each command in [number] command format */
+    /* numbering reflects issue order, not original absolute index */
     for (int i = 0; i < history_count; i++) {
         printf("[%d] %s\n", i + 1, history[i]);
     }

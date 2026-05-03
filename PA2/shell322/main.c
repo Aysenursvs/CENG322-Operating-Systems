@@ -49,6 +49,7 @@ int main() {
             raw[raw_len - 1] = '\0';
         }
 
+        /* parse mutates input, so we parse after preserving raw */
         /* parse the input into command type and args */
         ParsedCommand cmd = parse(input);
 
@@ -57,6 +58,7 @@ int main() {
             continue;
         }
 
+                /* add to history before execution to keep issue order */
                 /* add to history (except history command, it handles itself) */
         if (!(cmd.type == CMD_BUILTIN && cmd.args[0] != NULL &&
               strcmp(cmd.args[0], "history") == 0)) {

@@ -99,6 +99,7 @@ void exec_pipe(char **left_args, char **right_args) {
         exit(1);
     }
 
+    /* parent: close pipe ends so children can see EOF correctly */
     /* parent: close pipe ends and wait for both */
     close(fds[0]);
     close(fds[1]);

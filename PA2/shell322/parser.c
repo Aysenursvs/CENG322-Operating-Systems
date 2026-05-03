@@ -7,6 +7,7 @@
  * The resulting array is NULL-terminated for execvp compatibility.
  */
 static void tokenize(char *str, char **args) {
+    /* strtok writes '\0' into the buffer, so input is modified here */
     char *token = strtok(str, " ");
     int i = 0;
     while (token != NULL && i < MAX_ARGS - 1) {

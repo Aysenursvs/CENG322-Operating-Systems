@@ -106,6 +106,7 @@ void builtin_rmdir(char **args) {
         return;
     }
 
+    /* rmdir only removes empty directories */
     if (rmdir(args[1]) != 0) {
         perror("rmdir");
     }
