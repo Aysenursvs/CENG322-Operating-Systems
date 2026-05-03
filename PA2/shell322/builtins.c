@@ -46,14 +46,29 @@ void builtin_cd(char **args) {
     /* if no argument, go to HOME */
     /* otherwise call chdir() */
     /* update PWD environment variable */
-    char *HOME = getenv("HOME");
-    const char *target = (args[1] == NULL) ? HOME : args[1];
+    const char *target;
 
-    if (target == NULL || chdir(target) != 0) {
+    if (args[1] == NULL) {
+        /* no argument, go to HOME */
+        target = getenv("HOME");
+    } else if (strcmp(args[1], "~") == 0) {
+        /* ~ means HOME directory */
+        target = getenv("HOME");
+    } else {
+        target = args[1];
+    }
+
+    if (target == NULL) {
+        fprintf(stderr, "cd: HOME not set\n");
+        return;
+    }
+
+    if (chdir(target) != 0) {
         perror("cd");
         return;
     }
 
+    /* update PWD environment variable */
     char cwd[1024];
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
         setenv("PWD", cwd, 1);
