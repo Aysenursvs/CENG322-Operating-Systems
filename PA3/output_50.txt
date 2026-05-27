@@ -1,0 +1,172 @@
+[TIME 0] Plane 1 is waiting for boarding at airport 0
+[TIME 0] Plane 1 is boarding at airport 0
+[TIME 0] Plane 3 is waiting for boarding at airport 1
+[TIME 0] Plane 3 is boarding at airport 1
+[TIME 0] Plane 0 is waiting for boarding at airport 0
+[TIME 0] Plane 0 is boarding at airport 0
+[TIME 0] Plane 2 is waiting for boarding at airport 0
+[TIME 0] Plane 4 is waiting for boarding at airport 1
+[TIME 0] Plane 4 is boarding at airport 1
+[TIME 0] Plane 5 is waiting for boarding at airport 1
+[TIME 0] Plane 6 is waiting for boarding at airport 2
+[TIME 0] Plane 6 is boarding at airport 2
+[TIME 0] Plane 7 is waiting for boarding at airport 2
+[TIME 0] Plane 7 is boarding at airport 2
+[TIME 0] Plane 8 is waiting for boarding at airport 2
+[TIME 3] Plane 1 is waiting for takeoff runway at airport 0
+[TIME 3] Plane 1 is waiting for airspace clearance at airport 0
+[TIME 3] Plane 1 is taking off at airport 0
+[TIME 3] Plane 3 is waiting for takeoff runway at airport 1
+[TIME 3] Plane 2 is boarding at airport 0
+[TIME 3] Plane 5 is boarding at airport 1
+[TIME 3] Plane 0 is waiting for takeoff runway at airport 0
+[TIME 3] Plane 4 is waiting for takeoff runway at airport 1
+[TIME 3] Plane 3 is waiting for airspace clearance at airport 1
+[TIME 3] Plane 6 is waiting for takeoff runway at airport 2
+[TIME 3] Plane 8 is boarding at airport 2
+[TIME 3] Plane 6 is waiting for airspace clearance at airport 2
+[TIME 3] Plane 6 is taking off at airport 2
+[TIME 3] Plane 7 is waiting for takeoff runway at airport 2
+[TIME 5] Plane 1 is flying towards airport 1
+[TIME 5] Plane 0 is waiting for airspace clearance at airport 0
+[TIME 5] Plane 6 is flying towards airport 1
+[TIME 5] Plane 7 is waiting for airspace clearance at airport 2
+[TIME 6] Plane 2 is waiting for takeoff runway at airport 0
+[TIME 6] Plane 5 is waiting for takeoff runway at airport 1
+[TIME 6] Plane 1 is flying towards airport 1
+[TIME 6] Plane 8 is waiting for takeoff runway at airport 2
+[TIME 6] Plane 6 is flying towards airport 1
+[TIME 7] Plane 1 is flying towards airport 1
+[TIME 7] Plane 6 is flying towards airport 1
+[TIME 8] Plane 1 is waiting for landing at airport 1
+[TIME 8] Plane 1 is landing at airport 1
+[TIME 8] Plane 6 is flying towards airport 1
+[TIME 9] Plane 6 is flying towards airport 1
+[TIME 10] Plane 1 is waiting for unloading at airport 1
+[TIME 10] Plane 1 is unloading at airport 1
+[TIME 10] Plane 6 is waiting for landing at airport 1
+[TIME 10] Plane 6 is landing at airport 1
+[TIME 12] Plane 1 successfully traveled to airport 1
+[TIME 12] Plane 1 is waiting for boarding at airport 1
+[TIME 12] Plane 1 is boarding at airport 1
+[TIME 12] Plane 6 is waiting for unloading at airport 1
+[TIME 12] Plane 6 is unloading at airport 1
+[TIME 12] Plane 7 is taking off at airport 2
+[TIME 12] Plane 3 is taking off at airport 1
+[TIME 14] Plane 6 successfully traveled to airport 1
+[TIME 14] Plane 6 is waiting for boarding at airport 1
+[TIME 14] Plane 6 is boarding at airport 1
+[TIME 14] Plane 7 is flying towards airport 0
+[TIME 14] Plane 8 is waiting for airspace clearance at airport 2
+[TIME 14] Plane 4 is waiting for airspace clearance at airport 1
+[TIME 14] Plane 3 is flying towards airport 2
+[TIME 15] Plane 1 is waiting for takeoff runway at airport 1
+[TIME 15] Plane 7 is flying towards airport 0
+[TIME 15] Plane 3 is flying towards airport 2
+[TIME 16] Plane 7 is flying towards airport 0
+[TIME 16] Plane 3 is waiting for landing at airport 2
+[TIME 16] Plane 3 is landing at airport 2
+[TIME 17] Plane 6 is waiting for takeoff runway at airport 1
+[TIME 17] Plane 7 is waiting for landing at airport 0
+[TIME 17] Plane 7 is landing at airport 0
+[TIME 18] Plane 3 is waiting for unloading at airport 2
+[TIME 18] Plane 3 is unloading at airport 2
+[TIME 19] Plane 7 is waiting for unloading at airport 0
+[TIME 19] Plane 7 is unloading at airport 0
+[TIME 19] Plane 0 is taking off at airport 0
+[TIME 19] Plane 8 is taking off at airport 2
+[TIME 20] Plane 3 successfully traveled to airport 2
+[TIME 20] Plane 3 is waiting for boarding at airport 2
+[TIME 20] Plane 3 is boarding at airport 2
+[TIME 21] Plane 7 successfully traveled to airport 0
+[TIME 21] Plane 7 is waiting for boarding at airport 0
+[TIME 21] Plane 8 is flying towards airport 1
+[TIME 21] Plane 0 is flying towards airport 1
+[TIME 21] Plane 2 is waiting for airspace clearance at airport 0
+[TIME 21] Plane 7 is boarding at airport 0
+[TIME 22] Plane 8 is flying towards airport 1
+[TIME 22] Plane 0 is flying towards airport 1
+[TIME 23] Plane 8 is flying towards airport 1
+[TIME 23] Plane 3 is waiting for takeoff runway at airport 2
+[TIME 23] Plane 3 is waiting for airspace clearance at airport 2
+[TIME 23] Plane 0 is flying towards airport 1
+[TIME 24] Plane 7 is waiting for takeoff runway at airport 0
+[TIME 24] Plane 8 is flying towards airport 1
+[TIME 24] Plane 0 is waiting for landing at airport 1
+[TIME 24] Plane 0 is landing at airport 1
+[TIME 25] Plane 8 is flying towards airport 1
+[TIME 26] Plane 8 is waiting for landing at airport 1
+[TIME 26] Plane 0 is waiting for unloading at airport 1
+[TIME 26] Plane 0 is unloading at airport 1
+[TIME 26] Plane 8 is landing at airport 1
+[TIME 28] Plane 8 is waiting for unloading at airport 1
+[TIME 28] Plane 8 is unloading at airport 1
+[TIME 28] Plane 0 successfully traveled to airport 1
+[TIME 28] Plane 0 is waiting for boarding at airport 1
+[TIME 28] Plane 0 is boarding at airport 1
+[TIME 28] Plane 3 is taking off at airport 2
+[TIME 28] Plane 4 is taking off at airport 1
+[TIME 30] Plane 8 successfully traveled to airport 1
+[TIME 30] Plane 8 is waiting for boarding at airport 1
+[TIME 30] Plane 8 is boarding at airport 1
+[TIME 30] Plane 4 is flying towards airport 2
+[TIME 30] Plane 5 is waiting for airspace clearance at airport 1
+[TIME 30] Plane 3 is flying towards airport 0
+[TIME 31] Plane 0 is waiting for takeoff runway at airport 1
+[TIME 31] Plane 4 is flying towards airport 2
+[TIME 31] Plane 3 is flying towards airport 0
+[TIME 32] Plane 4 is waiting for landing at airport 2
+[TIME 32] Plane 4 is landing at airport 2
+[TIME 32] Plane 3 is flying towards airport 0
+[TIME 33] Plane 8 is waiting for takeoff runway at airport 1
+[TIME 33] Plane 3 is waiting for landing at airport 0
+[TIME 33] Plane 3 is landing at airport 0
+[TIME 34] Plane 4 is waiting for unloading at airport 2
+[TIME 34] Plane 4 is unloading at airport 2
+[TIME 35] Plane 3 is waiting for unloading at airport 0
+[TIME 35] Plane 3 is unloading at airport 0
+[TIME 35] Plane 2 is taking off at airport 0
+[TIME 35] Plane 5 is taking off at airport 1
+[TIME 36] Plane 4 successfully traveled to airport 2
+[TIME 36] Plane 4 is waiting for boarding at airport 2
+[TIME 36] Plane 4 is boarding at airport 2
+[TIME 37] Plane 3 successfully traveled to airport 0
+[TIME 37] Plane 3 is waiting for boarding at airport 0
+[TIME 37] Plane 2 is flying towards airport 2
+[TIME 37] Plane 7 is waiting for airspace clearance at airport 0
+[TIME 37] Plane 3 is boarding at airport 0
+[TIME 37] Plane 5 is flying towards airport 0
+[TIME 37] Plane 1 is waiting for airspace clearance at airport 1
+[TIME 38] Plane 2 is flying towards airport 2
+[TIME 38] Plane 5 is flying towards airport 0
+[TIME 39] Plane 2 is flying towards airport 2
+[TIME 39] Plane 5 is waiting for landing at airport 0
+[TIME 39] Plane 5 is landing at airport 0
+[TIME 39] Plane 4 is waiting for takeoff runway at airport 2
+[TIME 39] Plane 4 is waiting for airspace clearance at airport 2
+[TIME 40] Plane 3 is waiting for takeoff runway at airport 0
+[TIME 40] Plane 2 is flying towards airport 2
+[TIME 41] Plane 2 is waiting for landing at airport 2
+[TIME 41] Plane 2 is landing at airport 2
+[TIME 41] Plane 5 is waiting for unloading at airport 0
+[TIME 41] Plane 5 is unloading at airport 0
+[TIME 43] Plane 2 is waiting for unloading at airport 2
+[TIME 43] Plane 2 is unloading at airport 2
+[TIME 43] Plane 4 is taking off at airport 2
+[TIME 43] Plane 5 successfully traveled to airport 0
+[TIME 43] Plane 5 is waiting for boarding at airport 0
+[TIME 43] Plane 5 is boarding at airport 0
+[TIME 45] Plane 4 is flying towards airport 0
+[TIME 45] Plane 2 successfully traveled to airport 2
+[TIME 45] Plane 2 is waiting for boarding at airport 2
+[TIME 45] Plane 2 is boarding at airport 2
+[TIME 46] Plane 4 is flying towards airport 0
+[TIME 46] Plane 5 is waiting for takeoff runway at airport 0
+[TIME 47] Plane 4 is flying towards airport 0
+[TIME 48] Plane 4 is waiting for landing at airport 0
+[TIME 48] Plane 4 is landing at airport 0
+[TIME 48] Plane 2 is waiting for takeoff runway at airport 2
+[TIME 48] Plane 2 is waiting for airspace clearance at airport 2
+[TIME 50] Plane 4 is waiting for unloading at airport 0
+[TIME 50] Plane 4 is unloading at airport 0
+[TIME 50] Plane 7 is taking off at airport 0
