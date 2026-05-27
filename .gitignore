@@ -5,6 +5,7 @@
 *.rar
 *.7z
 *.exe
+pa3.md
 
 # Ignore shell322 binary but keep the folder
 **/shell322
