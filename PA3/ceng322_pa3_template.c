@@ -3,9 +3,10 @@
 #include <time.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <unistd.h>
 
 #define NUM_PLANES 9
-#define NUM_AIRPORTS 3
+#define NUM_airportS 3
 #define BOARDING_TIME 3
 #define TAKEOFF_TIME 2
 #define LANDING_TIME 2
@@ -18,31 +19,31 @@ int flying_times[3][3] = {
     {2, 0, 2},
     {3, 5, 0}
 };
-// Airport 0 right corridor ->  Corridor 0
-// Airport 1 right corridor ->  Corridor 1
-// Airport 2 right corridor ->  Corridor 2
-// Airport 0 left corridor ->  Corridor 2
-// Airport 1 left corridor ->  Corridor 0
-// Airport 2 left corridor ->  Corridor 1
+// airport 0 right corridor ->  Corridor 0
+// airport 1 right corridor ->  Corridor 1
+// airport 2 right corridor ->  Corridor 2
+// airport 0 left corridor ->  Corridor 2
+// airport 1 left corridor ->  Corridor 0
+// airport 2 left corridor ->  Corridor 1
 // Columns represent airports, rows represent corridors. 0 for right corridor, 1 for left corridor.
 int airport_corridor_connections[2][3] = {
     {0, 1, 2},  // right corridors
     {2, 0, 1}   // left corridors
 };
 
-// Satırlar: current_airport, Sütunlar: destination_airport
-// -1 olan yerler aynı havalimanını temsil eder (uçuş yok).
+// Rows: current_airport, columns: destination_airport
+// Entries with -1 represent the same airport (no flight).
 int routing_map[3][3] = {
-    {-1, 0, 2}, // Airport 0'dan 1'e -> Koridor 0, Airport 0'dan 2'ye -> Koridor 2
-    {0, -1, 1}, // Airport 1'den 0'a -> Koridor 0, Airport 1'den 2'ye -> Koridor 1
-    {2, 1, -1}  // Airport 2'den 0'a -> Koridor 2, Airport 2'den 1'e -> Koridor 1
+    {-1, 0, 2}, // From airport 0 to 1 -> Corridor 0, From airport 0 to 2 -> Corridor 2
+    {0, -1, 1}, // From airport 1 to 0 -> Corridor 0, From airport 1 to 2 -> Corridor 1
+    {2, 1, -1}  // From airport 2 to 0 -> Corridor 2, From airport 2 to 1 -> Corridor 1
 };
 
 //
-sem_t gates_sem[NUM_AIRPORTS];
-pthread_mutex_t takeoff_mutex[NUM_AIRPORTS];
-pthread_mutex_t landing_mutex[NUM_AIRPORTS];    
-pthread_mutex_t corridor_mutex[NUM_AIRPORTS];
+sem_t gates_sem[NUM_airportS];
+pthread_mutex_t takeoff_mutex[NUM_airportS];
+pthread_mutex_t landing_mutex[NUM_airportS];    
+pthread_mutex_t corridor_mutex[NUM_airportS];
 
 
 struct Plane {
@@ -80,9 +81,9 @@ void print_status(const char* message, int plane_id, int airport_id){
 
 void handle_boarding(struct Plane* plane, sem_t* gate_sem){
     // Implementation for boarding
-    print_status("Plane %d is waiting for boarding at Airport %d.\n", plane->id, plane->current_airport);
+    print_status("Plane %d is waiting for boarding at airport %d.\n", plane->id, plane->current_airport);
     sem_wait(&gate_sem[plane->current_airport]);
-    print_status("Plane %d is boarding at Airport %d.\n", plane->id, plane->current_airport);
+    print_status("Plane %d is boarding at airport %d.\n", plane->id, plane->current_airport);
     sleep(BOARDING_TIME);
     sem_post(&gate_sem[plane->current_airport]);
 
@@ -90,18 +91,18 @@ void handle_boarding(struct Plane* plane, sem_t* gate_sem){
 
 int handle_takeoff(struct Plane* plane, pthread_mutex_t* takeoff_mutex){
     // Implementation for takeoff
-    print_status("Plane %d is waiting for takeoff at Airport %d.\n", plane->id, plane->current_airport);
+    print_status("Plane %d is waiting for takeoff at airport %d.\n", plane->id, plane->current_airport);
     pthread_mutex_lock(&takeoff_mutex[plane->current_airport]);
     int chosen_corridor = handle_airspace_clearance(plane, corridor_mutex);
-    print_status("Plane %d is taking off from Airport %d.\n", plane->id, plane->current_airport);
+    print_status("Plane %d is taking off from airport %d.\n", plane->id, plane->current_airport);
     sleep(TAKEOFF_TIME);
     pthread_mutex_unlock(&takeoff_mutex[plane->current_airport]);
     return chosen_corridor;
 }
 
-handle_airspace_clearance(struct Plane* plane, pthread_mutex_t* corridor_mutex){
+int handle_airspace_clearance(struct Plane* plane, pthread_mutex_t* corridor_mutex){
     // Implementation for airspace clearance
-    print_status("Plane %d is waiting for airspace clearance at Airport %d.\n", plane->id, plane->current_airport);
+    print_status("Plane %d is waiting for airspace clearance at airport %d.\n", plane->id, plane->current_airport);
     int right_corridor = airport_corridor_connections[0][plane->current_airport];
     int left_corridor = airport_corridor_connections[1][plane->current_airport];
     while(1){
@@ -118,6 +119,8 @@ handle_airspace_clearance(struct Plane* plane, pthread_mutex_t* corridor_mutex){
                 pthread_mutex_unlock(&corridor_mutex[right_corridor]);
                 usleep(1000);
             }
+        }else{
+            usleep(1000);
         }
     }
 }
@@ -134,9 +137,9 @@ void handle_flying(struct Plane* plane){
 
 void handle_landing(struct Plane* plane, pthread_mutex_t* landing_mutex, pthread_mutex_t* corridor_mutex, int chosen_corridor){
     // Implementation for landing
-    print_status("Plane %d is waiting for landing at Airport %d.\n", plane->id, plane->destination_airport);
+    print_status("Plane %d is waiting for landing at airport %d.\n", plane->id, plane->destination_airport);
     pthread_mutex_lock(&landing_mutex[plane->destination_airport]);
-    print_status("Plane %d is landing at Airport %d.\n", plane->id, plane->destination_airport);
+    print_status("Plane %d is landing at airport %d.\n", plane->id, plane->destination_airport);
     sleep(LANDING_TIME);
     pthread_mutex_unlock(&corridor_mutex[chosen_corridor]);
     pthread_mutex_unlock(&landing_mutex[plane->destination_airport]);
@@ -144,27 +147,31 @@ void handle_landing(struct Plane* plane, pthread_mutex_t* landing_mutex, pthread
 
 void handle_unloading(struct Plane* plane){
     // Implementation for unloading
+    print_status("Plane %d is waiting for unloading at airport %d.\n", plane->id, plane->destination_airport);
+    sem_wait(&gates_sem[plane->destination_airport]);
+    print_status("Plane %d is unloading at airport %d.\n", plane->id, plane->destination_airport);
+    sleep(UNLOADING_TIME);
+    sem_post(&gates_sem[plane->destination_airport]);
 }
 
 void* simulate_plane(void* arg){
 
     struct Plane* current_plane = (struct Plane*)arg;
-    
-
-
+    int chosen_corridor;
     while(1){      
         do {
-        current_plane->destination_airport = rand() % NUM_AIRPORTS;
+        current_plane->destination_airport = rand() % NUM_airportS;
         } while (current_plane->destination_airport == current_plane->current_airport);
         
         
         handle_boarding(current_plane, gates_sem);           
-        handle_takeoff(current_plane, takeoff_mutex);           
+        chosen_corridor = handle_takeoff(current_plane, takeoff_mutex);           
         handle_flying(current_plane);             
         handle_landing(current_plane, landing_mutex, corridor_mutex, chosen_corridor);            
         handle_unloading(current_plane);
         
         current_plane->current_airport = current_plane->destination_airport;
+        print_status("Plane %d successfully traveled to airport %d.\n", current_plane->id, current_plane->current_airport);
     }                             
 }
 
@@ -173,7 +180,7 @@ int main(){
     simulation_start = time(NULL);
     
     // Initialize semaphores and mutexes
-    for(int i = 0; i < NUM_AIRPORTS; i++){
+    for(int i = 0; i < NUM_airportS; i++){
         sem_init(&gates_sem[i], 0, 2); 
         pthread_mutex_init(&takeoff_mutex[i], NULL);
         pthread_mutex_init(&landing_mutex[i], NULL);
@@ -186,10 +193,10 @@ int main(){
     for (size_t i = 0; i < NUM_PLANES; i++)
     {
         plane_data[i].id = i;
-        plane_data[i].current_airport = rand() % NUM_AIRPORTS;
-        plane_data[i].destination_airport = rand() % NUM_AIRPORTS;
+        plane_data[i].current_airport = rand() % NUM_airportS;
+        plane_data[i].destination_airport = rand() % NUM_airportS;
         while (plane_data[i].destination_airport == plane_data[i].current_airport) {
-            plane_data[i].destination_airport = rand() % NUM_AIRPORTS;
+            plane_data[i].destination_airport = rand() % NUM_airportS;
         }
         pthread_create(&planes[i], NULL, simulate_plane, &plane_data[i]);
     }
