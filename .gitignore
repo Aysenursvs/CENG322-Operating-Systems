@@ -10,6 +10,7 @@ pa3.md
 # Ignore shell322 binary but keep the folder
 **/shell322
 !**/shell322/
+*.o
 
 # Ignore all of PA1 except backup
 PA1/*
